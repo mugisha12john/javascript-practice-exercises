@@ -11,163 +11,124 @@ The shift will always be in range of [1, 26].
 */
 
 var CaesarCipher = function (shift) {
-  this.shift = shift;
+  // normalize shift so 26 = 0, 52 = 0, etc.
+  this.shift = shift % 26;
 };
 
 CaesarCipher.prototype.encode = function (plainText) {
-  if (this.shift < 0 || this.shift > 25) return;
+  if (this.shift < 0) return;
 
   let alphabetic = {
-    0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H',
-    8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P',
-    16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X',
-    24: 'Y', 25: 'Z'
+    0: "A",
+    1: "B",
+    2: "C",
+    3: "D",
+    4: "E",
+    5: "F",
+    6: "G",
+    7: "H",
+    8: "I",
+    9: "J",
+    10: "K",
+    11: "L",
+    12: "M",
+    13: "N",
+    14: "O",
+    15: "P",
+    16: "Q",
+    17: "R",
+    18: "S",
+    19: "T",
+    20: "U",
+    21: "V",
+    22: "W",
+    23: "X",
+    24: "Y",
+    25: "Z",
   };
+  let alphabeticReverse = Object.fromEntries(
+    Object.entries(alphabetic).map(([k, v]) => [v, Number(k)])
+  );
 
-  let alphabeticReverse = {
-    'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7,
-    'I': 8, 'J': 9, 'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15,
-    'Q': 16, 'R': 17, 'S': 18, 'T': 19, 'U': 20, 'V': 21, 'W': 22, 'X': 23,
-    'Y': 24, 'Z': 25
-  };
-
-  const plain = plainText.toUpperCase().split('');
-  let arr = [];
+  const plain = plainText.toUpperCase().split("");
   let output = [];
 
   for (let t of plain) {
     if (alphabeticReverse[t] !== undefined) {
-      let b = alphabeticReverse[t] + this.shift;
-      let x = b % 26; 
-      arr.push(x);
+      let b = (alphabeticReverse[t] + this.shift) % 26;
+      output.push(alphabetic[b]);
+    } else {
+      // Keep spaces, punctuation, and digits
+      output.push(t);
     }
   }
-
-  for (let l of arr) {
-    output.push(alphabetic[l]);
-  }
-
-  return output.join('');
+  return output.join("");
 };
 
 CaesarCipher.prototype.decode = function (cipherText) {
-  if (this.shift < 0 || this.shift > 25) return;
+  if (this.shift < 0) return;
 
   let alphabetic = {
-    0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H',
-    8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P',
-    16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X',
-    24: 'Y', 25: 'Z'
+    0: "A",
+    1: "B",
+    2: "C",
+    3: "D",
+    4: "E",
+    5: "F",
+    6: "G",
+    7: "H",
+    8: "I",
+    9: "J",
+    10: "K",
+    11: "L",
+    12: "M",
+    13: "N",
+    14: "O",
+    15: "P",
+    16: "Q",
+    17: "R",
+    18: "S",
+    19: "T",
+    20: "U",
+    21: "V",
+    22: "W",
+    23: "X",
+    24: "Y",
+    25: "Z",
   };
+  let alphabeticReverse = Object.fromEntries(
+    Object.entries(alphabetic).map(([k, v]) => [v, Number(k)])
+  );
 
-  let alphabeticReverse = {
-    'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7,
-    'I': 8, 'J': 9, 'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15,
-    'Q': 16, 'R': 17, 'S': 18, 'T': 19, 'U': 20, 'V': 21, 'W': 22, 'X': 23,
-    'Y': 24, 'Z': 25
-  };
-
-  const plain = cipherText.toUpperCase().split('');
-  let arr = [];
+  const cipher = cipherText.toUpperCase().split("");
   let output = [];
 
-  for (let t of plain) {
+  for (let t of cipher) {
     if (alphabeticReverse[t] !== undefined) {
-      let b = alphabeticReverse[t] - this.shift;
-      let x = (b + 26) % 26;
-      arr.push(x);
+      let b = (alphabeticReverse[t] - this.shift + 26) % 26;
+      output.push(alphabetic[b]);
+    } else {
+      output.push(t);
     }
   }
-
-  for (let l of arr) {
-    output.push(alphabetic[l]);
-  }
-
-  return output.join('');
+  return output.join("");
 };
+
+// ✅ Tests
+var c1 = new CaesarCipher(5);
+console.log(c1.encode("NY'X F XMNKY HNUMJW!!")); // => NY'X F XMNKY HNUMJW!!
+console.log(c1.decode("NY'X F XMNKY HNUMJW!!")); // same output
+
+var c2 = new CaesarCipher(13);
+console.log(c2.encode("MPGS6")); // => MPGS6
+console.log(c2.decode("MPGS6")); // => MPGS6
+
+var c3 = new CaesarCipher(26);
+console.log(c3.encode("JVJO")); // => JVJO
+console.log(c3.decode("JVJO")); // => JVJO
 
 // Test it
-var c = new CaesarCipher(5);
-console.log(c.encode('elie')); // IPMI
-console.log(c.decode('BFKKQJX')); var CaesarCipher = function (shift) {
-  this.shift = shift;
-};
-
-CaesarCipher.prototype.encode = function (plainText) {
-  if (this.shift < 0 || this.shift > 25) return;
-
-  let alphabetic = {
-    0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H',
-    8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P',
-    16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X',
-    24: 'Y', 25: 'Z'
-  };
-
-  let alphabeticReverse = {
-    'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7,
-    'I': 8, 'J': 9, 'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15,
-    'Q': 16, 'R': 17, 'S': 18, 'T': 19, 'U': 20, 'V': 21, 'W': 22, 'X': 23,
-    'Y': 24, 'Z': 25
-  };
-
-  const plain = plainText.toUpperCase().split('');
-  let arr = [];
-  let output = [];
-
-  for (let t of plain) {
-    if (alphabeticReverse[t] !== undefined) {
-      let b = alphabeticReverse[t] + this.shift;
-      let x = b % 26; 
-      arr.push(x);
-    }
-  }
-
-  for (let l of arr) {
-    output.push(alphabetic[l]);
-  }
-
-  return output.join('');
-};
-
-CaesarCipher.prototype.decode = function (cipherText) {
-  if (this.shift < 0 || this.shift > 25) return;
-
-  let alphabetic = {
-    0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H',
-    8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P',
-    16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X',
-    24: 'Y', 25: 'Z'
-  };
-
-  let alphabeticReverse = {
-    'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7,
-    'I': 8, 'J': 9, 'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15,
-    'Q': 16, 'R': 17, 'S': 18, 'T': 19, 'U': 20, 'V': 21, 'W': 22, 'X': 23,
-    'Y': 24, 'Z': 25
-  };
-
-  const plain = cipherText.toUpperCase().split('');
-  let arr = [];
-  let output = [];
-
-  for (let t of plain) {
-    if (alphabeticReverse[t] !== undefined) {
-      let b = alphabeticReverse[t] - this.shift;
-      let x = (b + 26) % 26;
-      arr.push(x);
-    }
-  }
-
-  for (let l of arr) {
-    output.push(alphabetic[l]);
-  }
-
-  return output.join('');
-};
-
-// Test it
-var c = new CaesarCipher(5);
-console.log(c.encode('elie')); // IPMI
-console.log(c.decode('BFKKQJX')); //  returns 'WAFFLES'
-console.log(c.encode('Codewars')) //returns 'HTIJBFWX'
-
+var d = new CaesarCipher(5);
+console.log(d.encode("elie")); // IPMI
+console.log(d.decode("BFKKQJX")); //  returns 'WAFFLES'
+console.log(d.encode("Codewars")); //returns 'HTIJBFWX'
