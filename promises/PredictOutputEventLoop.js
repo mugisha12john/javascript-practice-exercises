@@ -23,3 +23,11 @@ Promise.resolve()
   .then(console.log);
 
 console.log(5);
+// stricky one 
+Promise.resolve()
+  .then(() => {
+    throw new Error('Oops');
+  })
+  .then(() => console.log('A'))
+  .catch(() => console.log('B'))
+  .then(() => console.log('C'));
