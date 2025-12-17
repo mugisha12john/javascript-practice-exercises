@@ -31,3 +31,19 @@ Promise.resolve()
   .then(() => console.log('A'))
   .catch(() => console.log('B'))
   .then(() => console.log('C'));
+// answer is B,C since the error is caught in the catch block and the subsequent then is executed normally
+
+// advanced one
+Promise.resolve(1)
+  .then(x => {
+    console.log(x);
+    return x + 1;
+  })
+  .then(x => {
+    throw x + 1;
+  })
+  .catch(x => {
+    console.log(x);
+    return x * 2;
+  })
+  .then(x => console.log(x));
