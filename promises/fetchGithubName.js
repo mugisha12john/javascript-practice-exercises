@@ -1,9 +1,17 @@
 async function fetchGitHubName(username) {
-  let user = await fetch(
-    `https://api.github.com/users/${username}`)
-    .then((res) => res.json())
-    .then((ans) => console.log(ans.name))
-    .catch((err) => console.log(err));
+  try {
+    let user = await fetch(`https://api.github.com/users/${username}`);
+    if (!user.ok) {
+      throw new Error(`User ${username} not found`);
+    }
+    let data = await user.json();
+    return data.name;
+  } catch (error) {
+    console.error(error);
+    return null
+  }
 }
-// fetchGitHubName("mugisha12john");
+fetchGitHubName("addyosmani")
+  .then((res) => console.log(res || "No name found"))
+  .catch((error) => console.log(error));
 export { fetchGitHubName };
