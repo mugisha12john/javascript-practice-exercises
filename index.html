@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Change color background Color every 3 seconds</h1>
+    <script>
+      function getBackgroundColor() {
+        let colors = [
+          "red",
+          "blue",
+          "green",
+          "yellow",
+          "white",
+          "black",
+          "orange",
+          "pink",
+          "chocolate",
+          "purple",
+        ];
+        let randomColors = Math.floor(Math.random() * colors.length);
+        document.body.style.backgroundColor = colors[randomColors];
+      }
+      setInterval(() => getBackgroundColor(), 3000);
+    </script>
+  </body>
+</html>
