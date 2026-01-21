@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get file</title>
+  </head>
+  <body>
+    <h2>Get file using ajax and see we didn't load file</h2>
+    <button id="button">Get file</button>
+    <div id="result"></div>
+    <script>
+      const button = document.getElementById("button");
+      const result = document.getElementById("result");
+      button.addEventListener("click", getDocument);
+      function getDocument() {
+        const xhl = new XMLHttpRequest();
+        console.log("Current state " + xhl.readyState);
+        xhl.open("GET", "lorem.txt", true);
+        // xhl.onload = function () {
+        //   console.log("Current state ", this.readyState);
+        //   if (this.status == 200) {
+        //     result.innerText = this.responseText;
+        //   }
+        // };
+
+        xhl.onreadystatechange = function () {
+          console.log("Current state " + xhl.readyState);
+          if (this.readyState == 4 && this.status == 200) {
+            result.innerText = this.responseText;
+          }
+        };
+        xhl.send();
+      }
+    </script>
+  </body>
+</html>
