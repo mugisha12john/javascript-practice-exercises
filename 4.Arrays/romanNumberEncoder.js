@@ -8,20 +8,46 @@ In Roman numerals:
 2008 is written as 2000=MM, 8=VIII; or MMVIII.
 1666 uses each Roman symbol in descending order: MDCLXVI*/
 function solution(number) {
-  const romanMap = [
-    ["","I","II","III","IV","V","VI","VII","VIII","IX"],      
-    ["","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"],      
-    ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"],       
-    ["","M","MM","MMM"]                                        
-  ];
-  const digits = number.toString().split('').reverse(); 
-  let result = '';
-  for (let i = digits.length - 1; i >= 0; i--) {
-    result += romanMap[i][parseInt(digits[i])];
-  }
-  return result;
-}456 = 400+50+6
+  // const romanMap = [
+  //   ["","I","II","III","IV","V","VI","VII","VIII","IX"],
+  //   ["","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"],
+  //   ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"],
+  //   ["","M","MM","MMM"]
+  // ];
+
+  // const digits = number.toString().split('').reverse();
+  // let result = '';
+  // for (let i = digits.length - 1; i >= 0; i--) {
+  //   result += romanMap[i][parseInt(digits[i])];
+  // }
+  // console.log(digits)
+  // return result;
+
+  // code quality
+  // replace parseInt with map all element and convert it into number after reverse()
+  //remove console.log
+  // use object
+
+  const romanMap = {
+    ones: ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"],
+    tenths: ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"],
+    hundrends: ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"],
+    thousands: ["", "M", "MM", "MMM"],
+  };
+  const digits = number.toString().split("").reverse().map(Number);
+  let result = "";
+  // for (let i = digits.length - 1; i >= 0; i--) {
+  //   result += romanMap[i][digits[i]];
+  // }
+
+  return (
+    romanMap.thousands[digits[3]] +
+    romanMap.hundrends[digits[2] +
+     romanMap.tenths[digits[1]]] +
+    romanMap.ones[digits[0]]
+  );
+}
 
 console.log(solution(1990)); // MCMXC
 console.log(solution(2008)); // MMVIII
-console.log(solution(510));  // DX
+console.log(solution(510)); // DX
