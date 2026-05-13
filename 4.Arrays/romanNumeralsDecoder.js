@@ -39,7 +39,7 @@ let result=0
   
       if(currentIndex < nextIndex){
         result -= currentIndex;
-        continue;
+        
       }
     
     result += currentIndex
