@@ -39,7 +39,7 @@ let result=0
   
       if(currentIndex < nextIndex){
         result -= currentIndex;
-        
+        continue
       }
     
     result += currentIndex
@@ -49,3 +49,4 @@ let result=0
 }
 
 console.log(solution('MMVIII'))
+console.log(solution('IV'))
