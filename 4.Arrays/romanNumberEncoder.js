@@ -34,17 +34,12 @@ function solution(number) {
     hundrends: ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"],
     thousands: ["", "M", "MM", "MMM"],
   };
-  const digits = number.toString().split("").reverse().map(Number);
-  let result = "";
-  // for (let i = digits.length - 1; i >= 0; i--) {
-  //   result += romanMap[i][digits[i]];
-  // }
-
+  const digits = number.toString().split("").reverse().map(Number)
   return (
-    romanMap.thousands[digits[3]] +
-    romanMap.hundrends[digits[2] +
-     romanMap.tenths[digits[1]]] +
-    romanMap.ones[digits[0]]
+    (romanMap.thousands[digits[3] || 0] || "") +
+    (romanMap.hundrends[digits[2] || 0] || "") +
+    (romanMap.tenths[digits[1] || 0] || "") +
+    (romanMap.ones[digits[0] || 0] || "")
   );
 }
 
